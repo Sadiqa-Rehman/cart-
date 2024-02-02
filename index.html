@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        body {
+            background-color: #E3E7E8;
+            font-family: system-ui;
+        }
+
+        .container {
+            width: 1000px;
+            margin: auto;
+            transition: 0.5s;
+        }
+
+        header {
+            display: grid;
+            grid-template-columns: 1fr 50px;
+            margin-top: 50px;
+        }
+
+        header .shopping {
+            position: relative;
+            text-align: right;
+        }
+
+        header .shopping img {
+            width: 40px;
+        }
+
+        header .shopping span {
+            background: red;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            position: absolute;
+            top: -5px;
+            left: 80%;
+            padding: 3px 10px;
+        }
+
+        .product-section {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            column-gap: 20px;
+            row-gap: 20px;
+            margin-top: 50px;
+        }
+
+        .product-section .item {
+            text-align: center;
+            background-color: #DCE0E1;
+            /* padding: 20px; */
+            margin: 0px;
+            box-shadow: 0 50px 50px #757676;
+            letter-spacing: 1px;
+
+        }
+
+        .product-section .item img {
+            width: 100%;
+            height: 430px;
+            object-fit: fill;
+        }
+
+        .product-section .item .title {
+            font-weight: 600;
+        }
+
+        .product-section .item .price {
+            margin: 10px;
+        }
+
+        .product-section .item button {
+            background-color: #08348d;
+            color: #fff;
+            width: 100%;
+            padding: 10px;
+        }
+
+        .product-section .item button:hover {
+            background-color: #0b54e6;
+
+        }
+
+        .card {
+            position: fixed;
+            top: 0;
+            left: 100%;
+            width: 500px;
+            background-color: #453E3B;
+            height: 100vh;
+            transition: 0.5s;
+        }
+
+        .card .line {
+            display: flex;
+        }
+
+        .active .card {
+            left: calc(100% - 500px);
+        }
+
+        .active .container {
+            transform: translateX(100px);
+
+        }
+
+        .closeShopping {
+            color: #E8BC0E;
+            padding-left: 360px;
+            padding-top: 16px;
+            display: flex;
+
+
+        }
+
+        .card h1 {
+            color: #E8BC0E;
+            font-weight: 100;
+            margin: 0;
+            padding: 0 20px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+        }
+
+        .card .checkOut {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+
+        }
+
+        .card .checkOut div {
+            background-color: #E8BC0E;
+            width: 100%;
+            height: 70px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .card .checkOut div:nth-child(2) {
+            background-color: #1C1F25;
+            color: #fff;
+        }
+
+        .listCard li {
+            display: grid;
+            grid-template-columns: 100px repeat(3, 1fr);
+            color: #fff;
+            row-gap: 10px;
+        }
+
+        .listCard li div {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .listCard li img {
+            width: 90%;
+        }
+
+        .listCard li button {
+            background-color: #fff5;
+            border: none;
+        }
+
+        .listCard .count {
+            margin: 0 10px;
+        }
+
+        /*--------------------------------------
+                search filter
+    ---------------------------------------*/
+        /* Header */
+
+        .find {
+            height: 70px;
+            width: 100vw;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-family: sans-serif;
+            padding-left: 2em;
+            font-size: 2em;
+            font-weight: 700;
+        }
+
+        .search-input {
+            margin-left: auto;
+            margin-right: 2em;
+            padding: 0.5em;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1em;
+            outline: none;
+        }
+
+        .search-input::placeholder {
+            color: #aaa;
+        }
+
+        /* Products Secton */
+
+        .product-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 15px 0;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            align-items: center;
+            justify-items: center;
+        }
+
+        .no-match {
+            font-size: 5vmax;
+            color: grey;
+            width: 100%;
+            grid-area: 1/1/2/-1;
+        }
+
+
+
+        .item:hover {
+            transform: scale(.98);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .product-price {
+            color: #e44d26;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        @media (max-width: 635px) {
+            body {
+                padding: 0;
+            }
+
+            .product-section {
+                padding: 20px 0;
+            }
+
+            .product-card {
+                width: 370px;
+            }
+        }
+
+        @media (max-width: 505px) {
+            .logo {
+                padding: 0;
+            }
+
+            .navbar {
+                flex-direction: column;
+                justify-content: space-evenly;
+                height: 100px;
+            }
+
+            .search-input {
+                margin: auto;
+            }
+
+        }
+
+        @media (max-width: 430px) {
+            .product-card {
+                width: 90%;
+            }
+        }
+    </style>
+
+
+</head>
+
+<body>
+
+    <div class="find">
+        <div class="logo">SearchFilter</div>
+        <input type="text" class="search-input" placeholder="Search..." oninput="handleSearch(this.value)" />
+    </div>
+    <div class="container">
+        <header>
+            <h1>Your Shopping Cart</h1>
+            <div class="shopping">
+                <img src="cart pic.jpg">
+                <span class="quantity">0</span>
+            </div>
+        </header>
+
+
+
+        <div class="product-section" id="productSection">
+
+        </div>
+        <!--------card ----------->
+        <div class="card">
+            <div class="line">
+                <h1>cart</h1>
+                <span class="closeShopping"><img src="cross.png" height="30px" width="30px"></span>
+            </div>
+            <ul class="listCard">
+            </ul>
+            <div class="checkOut">
+                <div class="total">0</div>
+                <div id="submit" onclick="handlePayment()">Pay</div>
+
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+    <script>
+
+        // for searchbar
+
+
+        const products = [
+            {
+                id: 1,
+                name: "hp core i7",
+                category: "Laptop",
+                price: " 50,569",
+                img: "https://images.pexels.com/photos/205421/pexels-photo-205421.jpeg?cs=srgb&dl=pexels-craig-dennis-205421.jpg&fm=jpg",
+            },
+            {
+                id: 2,
+                name: "Best Gaming Phones 2023",
+                category: "Smartphone",
+                price: "75,857 ",
+                img: "https://www.trustedreviews.com/wp-content/uploads/sites/54/2023/04/Best-gaming-phone-2023.jpg",
+            },
+            {
+                id: 3,
+                name: "Official Huawei FreeBuds Studio Wireless Headphones",
+                category: "Headphones",
+                price: " RS 42,999 ",
+                img: "https://images.unsplash.com/photo-1572536147248-ac59a8abfa4b?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fGhlYWRwaG9uZXN8ZW58MHx8MHx8fDA%3D",
+            },
+            {
+                id: 4,
+                name: "SAMSUNG Galaxy Tab S6 Lite 10.4 64GB",
+                category: "Tablet",
+                price: " 199.9",
+                img: "https://m.media-amazon.com/images/I/415G0bg-hiL._AC._SR360,460.jpg",
+            },
+            {
+                id: 5,
+                name: "Microsoft Surface Laptop 5 Core i7 ",
+                category: "Laptop",
+                price: "474,999 ",
+                img: "https://www.mega.pk/items_images/Microsoft+Surface+Laptop+5+Core+i7+12th+Generation+16GB+RAM+512GB+SSD+13+5+inch+Windows+11+Price+in+Pakistan%2C+Specifications%2C+Features_-_23885.webp",
+            },
+            {
+                id: 6,
+                name: "HP Notebook 15",
+                category: "Laptop",
+                price: " 45,999.07 ",
+                img: "https://www.hshop.pk/wp-content/uploads/2019/12/HP-Notebook-15-RA008nia-Price-in-Pakistan-hshop.pk_.png",
+            },
+        ];
+
+        // let productSection = document.querySelector(".product-section");
+
+        function searchItem(products, itemToSearch) {
+            let item = itemToSearch.toLowerCase();
+            let result = products.filter((e) => {
+                let productName = e.category.toLowerCase();
+
+                return productName.includes(item);
+            });
+            return result;
+        }
+
+
+
+
+        function generateProductCard(product) {
+            return `
+               
+
+              `;
+        }
+
+        let productCardsHTML;
+
+        productCardsHTML = products.map(generateProductCard).join("");
+        productSection.innerHTML = productCardsHTML;
+
+        function handleSearch(searchTerm) {
+            let searchResult = searchItem(products, searchTerm);
+            if (searchResult.length > 0) {
+                productCardsHTML = searchResult.map(generateProductCard).join("");
+                productSection.innerHTML = productCardsHTML;
+            } else {
+                productSection.innerHTML = `<div class='no-match'>no match Found ...</div>`;
+
+            }
+        }
+
+
+
+        // ///////////////////////// for cart // //////////////////////
+
+
+        let openShopping = document.querySelector('.shopping');
+        let closeShopping = document.querySelector('.closeShopping');
+        let list = document.querySelector('.product-section');
+        let listCard = document.querySelector('.listCard');
+        let body = document.querySelector('body');
+        let quantity = document.querySelector('.quantity');
+        let total = document.querySelector('.total');
+
+        openShopping.addEventListener('click', () => {
+            body.classList.add('active');
+        })
+        closeShopping.addEventListener('click', () => {
+            body.classList.remove('active');
+        })
+
+        submit.addEventListener('click', () => {
+            body.classList.remove('active');
+        })
+        function handlePayment() {
+            alert('Payment successful!');
+        }
+
+        // //////  cart images  // /////
+
+        let listCards = [];
+        function initApp() {
+            products.forEach((value, key) => {
+                let newDiv = document.createElement('div');
+                newDiv.classList.add('item');
+                newDiv.innerHTML = `
+            <img src="${value.img}"> 
+            <div class="title">${value.name}</div>
+            <div class="price">${value.price.toLocaleString()}</div>
+            <button onclick="addToCard(${key})">Add To Cart</button>`;
+                list.appendChild(newDiv);
+            });
+        }
+
+        initApp();
+        function addToCard(key) {
+            if (listCards[key] == null) {
+                // copy product form list to list card
+                listCards[key] = JSON.parse(JSON.stringify(products[key]));
+                listCards[key].quantity = 1;
+            }
+            reloadCard();
+        }
+        function reloadCard() {
+            listCard.innerHTML = '';
+            let count = 0;
+            let totalPrice = 0;
+
+            listCards.forEach((value, key) => {
+                totalPrice += value.price;
+                count += value.quantity;
+
+                if (value != null) {
+                    let newDiv = document.createElement('li');
+                    newDiv.innerHTML = `
+                            <div><img src="${value.img}"/></div>
+                            <div>${value.name}</div>
+                            <div>${value.price.toLocaleString()}</div>
+                            <div>
+                                <button onclick="changeQuantity(${key}, ${value.quantity - 1})">-</button>
+                                <div class="count">${value.quantity}</div>
+                                <button onclick="changeQuantity(${key}, ${value.quantity + 1})">+</button>
+                            </div>`;
+                    listCard.appendChild(newDiv);
+                }
+            })
+
+            // console.log(totalPrice, count);
+            total.innerText = totalPrice.toLocaleString();
+            quantity.innerText = count;
+        }
+        function changeQuantity(key, quantity) {
+            if (quantity === 0) {
+                delete listCards[key];
+            } else {
+                listCards[key].quantity = quantity;
+                listCards[key].price = quantity * products[key].price;
+            }
+            reloadCard();
+        }
+    </script>
+</body>
+
+</html>
